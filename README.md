@@ -64,9 +64,31 @@
       
     lt = LiveblogTracer.new
     lt.run
-
+    
     lt.testresult #=> [[0, true], [1, true], [2, true]] 
     lt.passed? #=> true 
+    lt.tracelog
+
+## Tracelog output
+
+<pre>
+&lt;?polyrex schema='session[title,tags]/entry[classname, methodname]' delimiter='#'?&gt;
+title: switching the light on
+tags: trace Light
+
+Light#on
+&lt;?polyrex schema='session[title,tags]/entry[classname, methodname]' delimiter='#'?&gt;
+title: switching the light off
+tags: trace Light
+
+Light#off
+&lt;?polyrex schema='session[title,tags]/entry[classname, methodname]' delimiter='#'?&gt;
+title: switching the light on and off
+tags: trace Light
+
+Light#on
+Light#off
+</pre>
 
 ## Resources
 
