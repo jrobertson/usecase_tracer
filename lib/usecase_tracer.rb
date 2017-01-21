@@ -4,48 +4,12 @@
 
 require 'indented-tracer'
 
-=begin
-
-# example usecase
-
-# description
-
-usecase 'new day: create a new entry' do
-
-  # preparation (files to create in the 
-  #               /tmp directory, setting of the date etc.)
-
-  # intialisation
-  liveblog = LiveBlog.new
-
-  # setup (i.e. setting the date)
-
-  # conditions
-  if liveblog.date == Date.today and liveblog.today_exists? == false  then
-
-    trace() do
-
-      # public method to be traced
-      s = '# Testing the liveblog #liveblog'
-      liveblog.add_entry(s)
-
-    end
-
-    # optional validator
-    html = File.read(File.join(path, 'index.html'))
-    html =~ /Testing the liveblog/ ? true : false
-
-  end
-
-end # end of run
-=end
-
-
 class UsecaseTracer
   
   attr_reader :tracelog, :testresult
   
   @@classes = []
+  @@ignore_methods = []
   
   def initialize()
     
@@ -53,8 +17,7 @@ class UsecaseTracer
     cases()
     @tracelog = []
     @testresult = []
-    
-    
+        
   end
   
   def self.class_tracer(*args)
@@ -62,9 +25,10 @@ class UsecaseTracer
     @@classes = a.map(&:to_s)
   end
   
-  def classes()
-    @@classes
-  end
+  def self.ignore_methods(*args)
+    a = *args
+    @@ignore_methods = a.flatten
+  end  
   
   def run()
     
@@ -83,16 +47,17 @@ class UsecaseTracer
     @testresult.map(&:last).all?
   end
   
-  def trace()
+  def trace(ignore: [])
     
     it = IndentedTracer.new
     it.classes = @@classes
+    it.ignore_methods = (@@ignore_methods + [*ignore].map(&:to_sym))
     it.on
     
     yield
     
     it.off
-    @tracelog << it.log(@desc, tags: classes())
+    @tracelog << it.log(@desc, tags: @@classes)
     
   end  
   
@@ -108,4 +73,3 @@ class UsecaseTracer
     @usecases << [desc, blk]
   end  
 end
-
