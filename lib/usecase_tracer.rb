@@ -73,3 +73,25 @@ class UsecaseTracer
     @usecases << [desc, blk]
   end  
 end
+
+class QuickTrace
+
+  def self.copy(file=nil, weblet_file: nil)
+    
+    weblet_file ||= File.join(File.dirname(__FILE__), '..', 
+                                'data', 'weblet.txt')    
+
+    s = file ?  File.read(file) : Clipboard.paste 
+    lines = s.lines
+
+    a = lines.grep(/^require ["']/)
+    idx = lines.index a[-1]
+    requirex = lines[0..idx].join
+    code = lines[idx+1..-1].join
+
+    mainclass = code[/(\w+)(?=\.new)/]
+    Weblet.new(weblet_file, debug: false).render(:trace, binding)
+
+  end
+end
+
