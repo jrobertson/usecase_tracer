@@ -1,0 +1,32 @@
+%trace
+
+require 'usecase_tracer'
+#{requirex}
+
+class #{mainclass}Tracer < UsecaseTracer
+
+  class_tracer :#{mainclass}
+
+  def cases()
+
+    usecase 'untitled usecase 1' do
+
+      trace do
+
+        #{code}      
+
+      end
+
+      true
+    end
+
+  end
+
+end
+
+lt = #{mainclass}Tracer.new
+lt.run
+
+lt.testresult 
+lt.passed?
+puts lt.tracelog.first
