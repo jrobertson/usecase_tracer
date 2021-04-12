@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'usecase_tracer'
-  s.version = '0.2.1'
+  s.version = '0.2.2'
   s.summary = 'Traces the methods used for each use case and ' + 
       'returns them as raw Polyrex documents'
   s.authors = ['James Robertson']

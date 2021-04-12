@@ -2,6 +2,7 @@
 
 # file: usecase_tracer.rb
 
+require 'weblet'
 require 'indented-tracer'
 
 class UsecaseTracer
